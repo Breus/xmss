@@ -7,8 +7,7 @@ import (
 )
 
 func benchmarkKeyGen(h, d uint32, b *testing.B) {
-	seed := make([]byte, 32)
-	rand.Read(seed)
+	seed := generateSeed()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		sk, err := NewPrivKeyMT(seed, h, d)
@@ -20,7 +19,7 @@ func benchmarkKeyGen(h, d uint32, b *testing.B) {
 }
 
 func BenchmarkXMSSKeyGen(b *testing.B) {
-	hCases := []uint32{40}
+	hCases := []uint32{20}
 	dCases := []uint32{2, 4}
 
 	for _, h := range hCases {
@@ -34,10 +33,9 @@ func BenchmarkXMSSKeyGen(b *testing.B) {
 }
 
 func benchmarkSign(h, d uint32, b *testing.B) {
-	seed := make([]byte, 32)
+	seed := generateSeed()
 	msg := make([]byte, 51200)
 	rand.Read(msg)
-	rand.Read(seed)
 	sk, _ := NewPrivKeyMT(seed, h, d)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -46,7 +44,7 @@ func benchmarkSign(h, d uint32, b *testing.B) {
 }
 
 func BenchmarkXMSSSign(b *testing.B) {
-	hCases := []uint32{40}
+	hCases := []uint32{20}
 	dCases := []uint32{2, 4}
 	for _, h := range hCases {
 		for _, d := range dCases {
@@ -60,10 +58,9 @@ func BenchmarkXMSSSign(b *testing.B) {
 }
 
 func benchmarkVerify(h, d uint32, b *testing.B) {
-	seed := make([]byte, 32)
+	seed := generateSeed()
 	msg := make([]byte, 51200)
 	rand.Read(msg)
-	rand.Read(seed)
 	sk, _ := NewPrivKeyMT(seed, h, d)
 	pk := sk.PublicKey()
 	sig := sk.Sign(msg)
@@ -74,7 +71,7 @@ func benchmarkVerify(h, d uint32, b *testing.B) {
 }
 
 func BenchmarkXMSSVerify(b *testing.B) {
-	hCases := []uint32{40}
+	hCases := []uint32{20}
 	dCases := []uint32{2, 4}
 	for _, h := range hCases {
 		for _, d := range dCases {
