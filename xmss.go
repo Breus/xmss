@@ -25,6 +25,7 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"errors"
+	"testing"
 
 	"github.com/vmihailenco/msgpack"
 )
@@ -311,4 +312,9 @@ func rootFromSig(idx uint32, hmsg []byte, body *xmssSigBody, prf *prf, layer uin
 		idx >>= 1
 	}
 	return node0
+}
+
+// Benchmarks
+func benchmarkKeygen(b *testing.B) {
+
 }
